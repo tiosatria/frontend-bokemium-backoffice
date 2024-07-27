@@ -20,9 +20,9 @@ export const AdminShell = ({
   const router = useRouter();
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    if (!currentUser) router.push("/auth");
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (!currentUser) router.push("/auth");
+  // }, [currentUser]);
 
   useEffect(()=>{
     setActivePath(router.pathname)(dispatch)

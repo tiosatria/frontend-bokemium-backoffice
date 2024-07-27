@@ -90,49 +90,49 @@ export const MenuNavs: IMenu[] = [
 ];
 
 export const Navlink = (): JSX.Element => {
-    const router = useRouter()
-    const dispatch = useDispatch()
+  const router = useRouter()
+  const dispatch = useDispatch()
 
-  const {navlinkOpen} = useSelector((state:RootState)=>state.general)
-    const {activePath} = useSelector((state:RootState)=>state.general)
+  const { navlinkOpen } = useSelector((state: RootState) => state.general)
+  const { activePath } = useSelector((state: RootState) => state.general)
 
   const renderMenu = (menu: IMenu): JSX.Element => {
     return (
-      <NavLink key={menu.url} label={menu.label} leftSection={menu.icon} 
-      active={menu.url==activePath}
-      opened={menu.url==activePath}
-      href="#"
-      onClick={()=>router.push(menu.url)}
+      <NavLink key={menu.url} label={menu.label} leftSection={menu.icon}
+        active={menu.url == activePath}
+        opened={menu.url == activePath}
+        href="#"
+        onClick={() => router.push(menu.url)}
       >
         {menu.childMenu && menu.childMenu.map(renderMenu)}
       </NavLink>
     );
   };
 
-  const memoizedMenu = useMemo(()=>MenuNavs.map(renderMenu)
-  ,[MenuNavs,activePath])
+  const memoizedMenu = useMemo(() => MenuNavs.map(renderMenu)
+    , [MenuNavs, activePath])
 
   return (
-    <div className={`shadow-md p-2 h-[calc(100vh-77px)] flex flex-col justify-between w-64 transition-all ${!navlinkOpen&& "!w-34"}`}>
+    <div className={`${!navlinkOpen && "!w-[50px]"} shadow-md p-2 h-[calc(100vh-77px)] flex flex-col justify-between w-64 transition-all duration-500 overflow-hidden`}>
       <div className="flex flex-col">
-        <div className="flex flex-row justify-between">
-            {navlinkOpen&&<div className="font-bold my-auto">Main Menu</div>}
+        <div className={`flex flex-row ${!navlinkOpen ? 'justify-end' : 'justify-between'}`}>
+          {navlinkOpen && <div className="font-bold my-auto text-nowrap">Main Menu</div>}
           <Burger
             opened={navlinkOpen}
-            onClick={()=>{toggleNavlink()(dispatch)}}
+            onClick={() => { toggleNavlink()(dispatch) }}
             aria-label="Toggle navigation"
           />
         </div>
         {
-            navlinkOpen &&
-            <div className="flex flex-col">{memoizedMenu}</div>
+          navlinkOpen &&
+          <div className="flex flex-col flex-nowrap text-nowrap">{memoizedMenu}</div>
         }
       </div>
       {
         navlinkOpen &&
         <Center>
-        <Text c={"dimmed"}>Version {VERSION_NUMBER}</Text>
-      </Center>
+          <Text c={"dimmed"} className="text-nowrap">Version {VERSION_NUMBER}</Text>
+        </Center>
       }
     </div>
   );
